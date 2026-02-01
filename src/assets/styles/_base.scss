@@ -1,0 +1,64 @@
+/* Modern CSS Reset
+   https://piccalil.li/blog/a-modern-css-reset/
+*/
+
+/* 1. Более понятная модель бокса */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Убираем стандартные отступы */
+* {
+  margin: 0;
+}
+
+/* 3. Улучшаем работу с высотой */
+html,
+body,
+#app {
+  font-family: 'Orbitron', sans-serif;
+  height: 100%;
+}
+
+/* 4. Улучшаем рендер текста */
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 5. Медиа-элементы по умолчанию блочные */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 6. Формы наследуют шрифты */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 7. Защита от переполнения текста */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* 8. Корень для порталов (modals, tooltips) */
+#root,
+#__next {
+  isolation: isolate;
+}

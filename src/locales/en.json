@@ -1,0 +1,11 @@
+{
+  "enter": "Enter",
+  "enter_name": "Enter your name",
+  "submit": "Submit",
+  "exit": "Exit",
+  "join": "Join",
+  "create_game": "Create game",
+  "create": "Create",
+  "description": "Description",
+  "empty_here" :"It's empty here yet"
+}

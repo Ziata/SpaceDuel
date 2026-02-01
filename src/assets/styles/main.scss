@@ -1,0 +1,48 @@
+@use './fonts' as *;
+@use './variables' as *;
+@use './mixins' as *;
+@use './base';
+html,
+body,
+#app {
+  font-family: 'Orbitron', sans-serif;
+  height: 100%;
+  width: 100%;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Применяем к скроллу на всех элементах */
+* {
+  scrollbar-width: thin; /* Firefox: тонкий скроллбар */
+  scrollbar-color: rgba(0, 0, 0, 0.5) transparent; /* Firefox */
+}
+
+/* Chrome, Safari, Edge */
+*::-webkit-scrollbar {
+  width: 3px; /* ширина вертикального скролла */
+  height: 3px; /* высота горизонтального скролла */
+  background: transparent; /* фон трека */
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent; /* фон трека */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* цвет полоски */
+  border-radius: 3px;
+}
+
+*::-webkit-scrollbar-button {
+  display: none; /* убираем стрелки */
+  width: 0;
+  height: 0;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent; /* убираем уголок */
+}
