@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import ButtonBase from '@/components/ui/ButtonBase.vue';
-  import { useGamesStore } from '@/stores/game.store';
+  import { gameSocket } from '@/socket/gameSocket';
   import { useUserStore } from '@/stores/user.store';
   import type { IGame } from '@/types/game';
   import { formatDistance } from 'date-fns';
@@ -9,7 +9,6 @@
   const { game } = defineProps<{ game: IGame }>();
 
   const userStore = useUserStore();
-  const gameStore = useGamesStore();
 
   const isMyGame = computed(() => userStore.user?.id === game.owner.id);
 </script>
@@ -24,10 +23,15 @@
     <ButtonBase
       v-if="isMyGame && userStore.user"
       size="small"
-      @click="gameStore.onRemoveGame(game._id)"
+      @click="gameSocket.deleteGameWS(game._id)"
       >{{ $t('remove') }}</ButtonBase
     >
-    <ButtonBase v-else-if="userStore.user" size="small">{{ $t('join') }}</ButtonBase>
+    <ButtonBase
+      v-else-if="userStore.user"
+      size="small"
+      @click="gameSocket.joinGameWS(game._id, userStore.user)"
+      >{{ $t('join') }}</ButtonBase
+    >
   </div>
 </template>
 

@@ -1,3 +1,35 @@
 {
-  "enter": "Вхід"
+  "enter": "Вхід",
+
+
+
+  "orbital_bastion": "Орбітальний бастіон",
+  "orbital_bastion_desc": "+12 до планетарного щита",
+
+  "crystal_abundance": "Кристалічне достаток",
+  "crystal_abundance_desc": "+1 до щита, ви ходите знову",
+
+  "asteroid_rich_vein": "Багата жила астероїда",
+  "asteroid_rich_vein_desc": "Якщо ваша шахта менша за ворожу — +2, інакше +1",
+
+  "protective_dome": "Захисний купол",
+  "protective_dome_desc": "+4 до щита",
+
+  "unstable_crystals": "Нестабільні кристали",
+  "unstable_crystals_desc": "Усі гравці втрачають по 8 кристалів",
+
+  "reinforced_planetary_barrier": "Посилений планетарний бар’єр",
+  "reinforced_planetary_barrier_desc": "+8 до щита",
+
+  "ultra_orbital_shield": "Надміцний орбітальний щит",
+  "ultra_orbital_shield_desc": "+15 до щита",
+
+  "asteroid_tunnel_system": "Система тунелів астероїда",
+  "asteroid_tunnel_system_desc": "+5 до щита, +1 казарма",
+
+  "mining_drone_swarm": "Рій видобувних дронів",
+  "mining_drone_swarm_desc": "+4 до щита, +1 шахта",
+
+  "gravitational_fissure": "Гравітаційний розлом",
+  "gravitational_fissure_desc": "Гравець із слабшим щитом втрачає 1 казарму та отримує 2 пошкодження станції"
 }

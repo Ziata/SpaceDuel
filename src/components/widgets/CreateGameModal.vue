@@ -3,7 +3,7 @@
   import ButtonBase from '../ui/ButtonBase.vue';
   import InputBase from '../ui/InputBase.vue';
   import { useUserStore } from '@/stores/user.store';
-  import { useGamesStore } from '@/stores/game.store';
+  import { gameSocket } from '@/socket/gameSocket';
 
   const { closeSelf } = defineProps<{
     closeSelf: () => void;
@@ -12,7 +12,6 @@
   const desc = ref<string>('');
   const isError = ref<boolean>(false);
   const userStore = useUserStore();
-  const gamesStore = useGamesStore();
 
   watch(desc, () => {
     if (desc.value.length > 0) {
@@ -33,7 +32,7 @@
     };
 
     try {
-      await gamesStore.addGame(payload);
+      gameSocket.createGameWS(payload);
       closeSelf();
     } catch (e) {
       console.error(e);

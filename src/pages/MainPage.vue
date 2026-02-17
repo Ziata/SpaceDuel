@@ -7,6 +7,9 @@
   import { computed, onMounted } from 'vue';
   import GameListItem from '@/features/GamesList/GameListItem.vue';
   import LoaderBase from '@/components/widgets/LoaderBase.vue';
+  import router from '@/router';
+  import { gameSocket } from '@/socket/gameSocket';
+  import HeaderBase from '@/components/widgets/HeaderBase.vue';
 
   const { open } = useModal();
   const userStore = useUserStore();
@@ -20,6 +23,22 @@
 
   onMounted(() => {
     gamesStore.fetchGames();
+
+    gameSocket.onGameCreatedWS((game) => {
+      gamesStore.games.push(game);
+    });
+
+    gameSocket.onGameDeletedWS((gameId) => {
+      gamesStore.games = gamesStore.games.filter((g) => g._id !== gameId);
+    });
+
+    gameSocket.onPlayerJoinedWS((updatedGame) => {
+      gamesStore.games = gamesStore.games.map((g) => (g._id === updatedGame._id ? updatedGame : g));
+    });
+
+    gameSocket.onGameStartedWS(({ gameId }) => {
+      router.push(`/game/${gameId}`);
+    });
   });
 
   const hasMyGame = computed(() => {
@@ -28,6 +47,7 @@
 </script>
 
 <template>
+  <HeaderBase />
   <main class="main">
     <ButtonBase v-if="!hasMyGame && userStore.user" @click="openModal">{{
       $t('create_game')

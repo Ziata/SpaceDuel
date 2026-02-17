@@ -7,5 +7,49 @@
   "create_game": "Create game",
   "create": "Create",
   "description": "Description",
-  "empty_here" :"It's empty here yet"
+  "empty_here" :"It's empty here yet",
+  "HP": "HP",
+  "shield": "Shield",
+  "mine": "Mine",
+  "barracks": "Barracks",
+  "crystals": "Crystals",
+  "turn": "Turn",
+  "win": "You win!",
+  "lose": "You lose!",
+  "drones": "Drones",
+  "nanomaterials": "Nanomaterials",
+  "psiEnergy": "Psi Energy",
+  "waiting for player":"Waiting for player",
+  
+  "orbital_bastion": "Orbital Bastion",
+  "orbital_bastion_desc": "+12 to planetary shield",
+
+  "crystal_abundance": "Crystal Abundance",
+  "crystal_abundance_desc": "+1 to shield, play again",
+
+  "asteroid_rich_vein": "Rich Asteroid Vein",
+  "asteroid_rich_vein_desc": "If your mine is lower than the enemy's, +2, otherwise +1",
+
+  "protective_dome": "Protective Dome",
+  "protective_dome_desc": "+4 to shield",
+
+  "unstable_crystals": "Unstable Crystals",
+  "unstable_crystals_desc": "All players lose 8 crystals",
+
+  "reinforced_planetary_barrier": "Reinforced Planetary Barrier",
+  "reinforced_planetary_barrier_desc": "+8 to shield",
+
+  "ultra_orbital_shield": "Ultra Orbital Shield",
+  "ultra_orbital_shield_desc": "+15 to shield",
+
+  "asteroid_tunnel_system": "Asteroid Tunnel System",
+  "asteroid_tunnel_system_desc": "+5 to shield, +1 barracks",
+
+  "mining_drone_swarm": "Mining Drone Swarm",
+  "mining_drone_swarm_desc": "+4 to shield, +1 mine",
+
+  "gravitational_fissure": "Gravitational Fissure",
+  "gravitational_fissure_desc": "The player with the weaker shield loses 1 barracks and takes 2 damage to their station"
+
+
 }
