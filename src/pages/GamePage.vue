@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import { getActiveGame } from '@/api/game';
-  import PlayCard from '@/features/PlayCard/PlayCard.vue';
+  import PlayCard from '@/features/Game/PlayCard.vue';
   import router from '@/router';
+  import GamePlayer from '@/features/Game/GamePlayer.vue';
   import { gameSocket } from '@/socket/gameSocket';
   import { useUserStore } from '@/stores/user.store';
   import type { IActiveGame } from '@/types/game';
@@ -73,56 +74,11 @@
 
 <template>
   <main class="main" v-if="game">
-    <div class="left" v-if="currentPlayer">
-      <div class="header">
-        <h4>{{ currentPlayer.name }}</h4>
-        <span>{{ $t('HP') }}: {{ currentPlayer.planetIntegrity }}</span>
-        <span>{{ $t('shield') }}: {{ currentPlayer.orbitalShield }}</span>
-        <span
-          >{{ $t('drones') }}: {{ currentPlayer.resources.drones }} (+{{
-            currentPlayer.production.drones
-          }})</span
-        >
-        <span
-          >{{ $t('nanomaterials') }}: {{ currentPlayer.resources.nanomaterials }} (+{{
-            currentPlayer.production.nanomaterials
-          }})</span
-        >
-        <span
-          >{{ $t('psiEnergy') }}: {{ currentPlayer.resources.psiEnergy }} (+{{
-            currentPlayer.production.psiEnergy
-          }})</span
-        >
-      </div>
-    </div>
-
+    <GamePlayer v-if="currentPlayer" :player="currentPlayer" class="left" :position="'left'" />
     <div class="center">
-      {{ $t('waiting for player') }}: {{ game.players[game.currentPlayer]?.name }}
+      <!-- {{ $t('waiting for player') }}: {{ game.players[game.currentPlayer]?.name }} -->
     </div>
-
-    <div class="right" v-if="opponent">
-      <div class="header">
-        <h4>{{ opponent.name }}</h4>
-        <span>{{ $t('HP') }}: {{ opponent.planetIntegrity }}</span>
-        <span>{{ $t('shield') }}: {{ opponent.orbitalShield }}</span>
-        <span
-          >{{ $t('drones') }}: {{ opponent.resources.drones }} (+{{
-            opponent.production.drones
-          }})</span
-        >
-        <span
-          >{{ $t('nanomaterials') }}: {{ opponent.resources.nanomaterials }} (+{{
-            opponent.production.nanomaterials
-          }})</span
-        >
-        <span
-          >{{ $t('psiEnergy') }}: {{ opponent.resources.psiEnergy }} (+{{
-            opponent.production.psiEnergy
-          }})</span
-        >
-      </div>
-    </div>
-
+    <GamePlayer v-if="opponent" :player="opponent" class="right" :position="'right'" />
     <div class="field">
       <div class="deck">{{ game.deck.length }}</div>
       <div class="hand">
@@ -140,31 +96,34 @@
 <style scoped>
   .main {
     display: grid;
-    grid-template-columns: 300px 1fr 300px;
+    grid-template-columns: 200px 1fr 200px;
     grid-template-rows: 1fr auto;
-    height: 100%;
     width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 
   .left {
-    height: 100%;
+    height: auto;
     grid-column: 1 / 2;
     grid-row: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-bottom-right-radius: 20px;
   }
 
   .center {
-    background-color: rgba(226, 226, 226, 0.1);
-    backdrop-filter: blur(4px);
-    color: var(--input-text-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .right {
-    height: 100%;
+    height: auto;
     grid-column: 3 / 4;
     grid-row: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    border-bottom-left-radius: 20px;
   }
 
   .field {
@@ -173,19 +132,6 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-  }
-
-  .header {
-    background-color: rgba(226, 226, 226, 0.1);
-    backdrop-filter: blur(4px);
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    color: var(--input-text-color);
-  }
-
-  .header h4 {
-    font-size: 20px;
   }
 
   .hand {
