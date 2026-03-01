@@ -5,7 +5,11 @@ export interface IUser {
   id: string;
 }
 
-export type ResourceType = 'nanomaterials' | 'psiEnergy' | 'drones';
+export enum ResourceType {
+  Nanomaterials = 'nanomaterials',
+  PsiEnergy = 'psiEnergy',
+  Drones = 'drones',
+}
 
 // === Полное состояние игрока (на сервере) ===
 export interface IPlayerGameState extends IUser {

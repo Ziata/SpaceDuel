@@ -35,6 +35,8 @@ export interface IActiveGame {
   /**
    * Для отладки/прозрачности (не обязательно)
    */
+  activeCards: ICardBase[];
   requestedUserId?: string;
   deck: ICardBase[];
+  discardPile: ICardBase[];
 }

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" >
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" fill="none">
   <defs>
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#1a2a6c;stop-opacity:1" />
@@ -44,7 +44,7 @@
   </defs>
 
   <!-- Background -->
-  <rect width="60" height="60" rx="8" fill="url(#deepSpace)" />
+  <rect width="60" height="60" rx="8" />
   
   <!-- Stars -->
   <circle cx="10" cy="10" r="0.5" fill="#ffffff" opacity="0.6"/>

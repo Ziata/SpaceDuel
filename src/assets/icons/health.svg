@@ -1,0 +1,75 @@
+<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <defs>
+    <linearGradient id="bgGradient" x1="0" y1="0" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F1F8E9"/>
+      <stop offset="1" stop-color="#DCEDC8"/>
+    </linearGradient>
+    <linearGradient id="oceanGradient" x1="10" y1="10" x2="50" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4FC3F7"/>
+      <stop offset="1" stop-color="#0288D1"/>
+    </linearGradient>
+    <linearGradient id="landGradient" x1="20" y1="20" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#81C784"/>
+      <stop offset="1" stop-color="#388E3C"/>
+    </linearGradient>
+    <linearGradient id="heartGradient" x1="22" y1="22" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#EF5350"/>
+      <stop offset="1" stop-color="#C62828"/>
+    </linearGradient>
+    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+      <feOffset dx="0" dy="1" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.2"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode in="offsetblur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <clipPath id="planetClip">
+      <circle cx="30" cy="30" r="22"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="60" height="60" rx="12" />
+
+  <!-- Subtle Border -->
+  <rect x="0.5" y="0.5" width="59" height="59" rx="11.5" ry="11.5" fill="none" stroke="#ffffff" stroke-opacity="0.1" />
+
+  <!-- Drop Shadow for Planet -->
+  <ellipse cx="30" cy="54" rx="18" ry="3" fill="#37474F" opacity="0.15"/>
+
+  <!-- Planet Body -->
+  <g filter="url(#dropShadow)">
+    <circle cx="30" cy="30" r="22" fill="url(#oceanGradient)"/>
+    
+    <!-- Continents -->
+    <g clip-path="url(#planetClip)">
+      <!-- North America-ish -->
+      <path d="M12 18C14 14 20 12 24 16C26 18 25 22 22 25C18 28 14 26 12 24C10 22 10 20 12 18Z" fill="url(#landGradient)"/>
+      <!-- South America-ish -->
+      <path d="M20 32C24 30 28 32 29 36C30 40 26 46 22 44C18 42 18 38 20 32Z" fill="url(#landGradient)"/>
+      <!-- Europe/Africa-ish -->
+      <path d="M36 14C40 12 46 14 48 18C50 22 46 26 42 25C38 24 34 20 36 14Z" fill="url(#landGradient)"/>
+      <path d="M40 28C44 28 48 30 48 36C48 42 42 46 38 42C34 38 36 32 40 28Z" fill="url(#landGradient)"/>
+    </g>
+
+    <!-- Atmosphere Highlight (Inner Glow effect) -->
+    <circle cx="30" cy="30" r="21" fill="none" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="1"/>
+    <path d="M16 20Q22 14 30 14Q38 14 44 20" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Health Symbol (Heart) -->
+  <g filter="url(#dropShadow)">
+    <!-- White Outline for separation -->
+    <path d="M30 42L24.2 36.8C21.5 34.3 20 31.5 20 28.5C20 25.5 22.5 23 25.5 23C27.5 23 29.2 24.2 30 25.8C30.8 24.2 32.5 23 34.5 23C37.5 23 40 25.5 40 28.5C40 31.5 38.5 34.3 35.8 36.8L30 42Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>
+    
+    <!-- Red Heart -->
+    <path d="M30 42L24.2 36.8C21.5 34.3 20 31.5 20 28.5C20 25.5 22.5 23 25.5 23C27.5 23 29.2 24.2 30 25.8C30.8 24.2 32.5 23 34.5 23C37.5 23 40 25.5 40 28.5C40 31.5 38.5 34.3 35.8 36.8L30 42Z" fill="url(#heartGradient)"/>
+    
+    <!-- Heart Highlight -->
+    <path d="M23 27C23 25.5 24 24.5 25 24.5C26 24.5 26.5 25 26.5 25" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

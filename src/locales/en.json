@@ -19,6 +19,8 @@
   "drones": "Drones",
   "nanomaterials": "Nanomaterials",
   "psiEnergy": "Psi Energy",
+  "integrity":"Integrity",
+  "per_turn": "per turn",
   "waiting for player":"Waiting for player",
   
   "orbital_bastion": "Orbital Bastion",

@@ -8,6 +8,7 @@
   import type { IActiveGame } from '@/types/game';
   import { ref, onMounted, computed, watchEffect } from 'vue';
   import { useRoute } from 'vue-router';
+  import CoverCard from '@/features/Game/CoverCard.vue';
 
   const route = useRoute();
   const userStore = useUserStore();
@@ -65,6 +66,19 @@
   const currentPlayer = computed(() => game.value?.playerState || null);
   const opponent = computed(() => game.value?.opponent || null);
 
+  const getCardStyle = (index: number, total: number) => {
+    const maxVisible = 3;
+    const visibleIndex = total > maxVisible ? index : index;
+    const offsetX = 10;
+    const offsetY = 7;
+    return {
+      position: 'absolute',
+      left: `${visibleIndex * offsetX}px`,
+      top: `${visibleIndex * offsetY}px`,
+      zIndex: visibleIndex,
+    };
+  };
+
   watchEffect(() => {
     console.log('game сейчас:', game.value);
     if (currentPlayer.value) console.log('currentPlayer сейчас:', currentPlayer.value);
@@ -76,19 +90,43 @@
   <main class="main" v-if="game">
     <GamePlayer v-if="currentPlayer" :player="currentPlayer" class="left" :position="'left'" />
     <div class="center">
-      <!-- {{ $t('waiting for player') }}: {{ game.players[game.currentPlayer]?.name }} -->
+      <div class="top">
+        {{ $t('waiting for player') }}: {{ game.players[game.currentPlayer]?.name }}
+      </div>
+      <div class="field">
+        <div class="deck">
+          <CoverCard
+            v-for="(card, index) in (game.deck || []).slice(-3)"
+            :key="card.id"
+            :style="getCardStyle(index, (game.deck || []).length)"
+          />
+        </div>
+        <div class="main-deck">
+          <PlayCard
+            v-for="card in game.activeCards || []"
+            :key="card.id"
+            :card="card"
+            :game="game"
+            :isUsable="false"
+          />
+        </div>
+        <div class="deck">
+          <CoverCard
+            v-for="(card, index) in (game.discardPile || []).slice(-3)"
+            :key="card.id"
+            :style="getCardStyle(index, (game.discardPile || []).length)"
+          />
+        </div>
+      </div>
     </div>
     <GamePlayer v-if="opponent" :player="opponent" class="right" :position="'right'" />
-    <div class="field">
-      <div class="deck">{{ game.deck.length }}</div>
-      <div class="hand">
-        <PlayCard
-          v-for="card in currentPlayer?.hand || []"
-          :key="card.id"
-          :card="card"
-          :game="game"
-        />
-      </div>
+    <div class="hand">
+      <PlayCard
+        v-for="card in currentPlayer?.hand || []"
+        :key="card.id"
+        :card="card"
+        :game="game"
+      />
     </div>
   </main>
 </template>
@@ -114,6 +152,24 @@
   }
 
   .center {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .top {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    font-size: 24px;
+    color: var(--input-primary-color);
+    margin: 0 auto;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
   }
 
   .right {
@@ -126,23 +182,45 @@
     border-bottom-left-radius: 20px;
   }
 
-  .field {
+  .hand {
     grid-column: 1 / 4;
     grid-row: 2 / 3;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-
-  .hand {
     width: 100%;
     display: flex;
-    justify-content: space-evenly;
     padding: 20px;
-    height: 250px;
+    height: 290px;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .field {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 20px 20px;
+    gap: 20px;
+    justify-content: space-between;
   }
 
   .deck {
-    color: var(--input-text-color);
+    display: flex;
+    align-items: center;
+    min-width: 220px;
+    position: relative;
+    height: 250px;
+    flex-shrink: 0;
+
+    div {
+      position: absolute;
+    }
+  }
+
+  .main-deck {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    overflow: auto;
+    padding: 20px 0;
   }
 </style>
