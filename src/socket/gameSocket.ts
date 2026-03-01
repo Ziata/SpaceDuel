@@ -6,7 +6,7 @@ class GameSocket {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://localhost:3000', {
+    this.socket = io(`${import.meta.env.VITE_API_URL}`, {
       autoConnect: true,
     });
   }
