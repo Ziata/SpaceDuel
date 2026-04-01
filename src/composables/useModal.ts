@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { reactive, type Component } from 'vue';
+import { markRaw, reactive, type Component } from 'vue';
 
 export type ModalOptions = {
   id?: string;
@@ -18,6 +18,10 @@ const updateBodyScroll = () => {
 
 export function useModal() {
   const open = (options: ModalOptions) => {
+    const alreadyOpened = modals.some((m) => m.component === options.component);
+
+    if (alreadyOpened) return;
+
     const id = options.id || v4();
 
     const closeSelf = () => close(id);
@@ -25,6 +29,7 @@ export function useModal() {
     modals.push({
       ...options,
       id,
+      component: markRaw(options.component),
       props: {
         ...(options.props || {}),
         closeSelf,

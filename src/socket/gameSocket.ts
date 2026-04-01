@@ -8,7 +8,11 @@ class GameSocket {
   constructor() {
     this.socket = io(`${import.meta.env.VITE_API_URL}`, {
       autoConnect: true,
+      withCredentials: true,
       transports: ['websocket'],
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 1000,
     });
   }
 
@@ -54,20 +58,28 @@ class GameSocket {
     this.socket.on('playerJoined', callback);
   }
 
-  onGameStartedWS(callback: (payload: { gameId: string }) => void) {
+  onGameStartedWS(callback: (payload: { game: IActiveGame; serverNow: number }) => void) {
     this.socket.on('gameStarted', callback);
   }
 
-  onPlayCardWS(callback: (game: IActiveGame) => void) {
+  onPlayCardWS(callback: (payload: { game: IActiveGame; serverNow: number }) => void) {
     this.socket.on('playCard', callback);
   }
 
-  onDiscardCardWS(callback: (game: IActiveGame) => void) {
+  onDiscardCardWS(callback: (payload: { game: IActiveGame; serverNow: number }) => void) {
     this.socket.on('discardCard', callback);
   }
 
   onGameEndedWS(callback: (payload: { winnerId: string }) => void) {
     this.socket.on('gameEnded', callback);
+  }
+
+  onGameStateWS(callback: (payload: { game: IActiveGame; serverNow: number }) => void) {
+    this.socket.on('gameState', callback);
+  }
+
+  onReconnect(callback: () => void) {
+    this.socket.on('reconnect', callback);
   }
 
   // ======== CLEANUP ========

@@ -1,21 +1,26 @@
 <script setup lang="ts">
   import { getActiveGame } from '@/api/game';
   import PlayCard from '@/features/Game/PlayCard.vue';
-  import router from '@/router';
   import GamePlayer from '@/features/Game/GamePlayer.vue';
   import { gameSocket } from '@/socket/gameSocket';
   import { useUserStore } from '@/stores/user.store';
   import type { IActiveGame } from '@/types/game';
-  import { ref, onMounted, computed, watchEffect } from 'vue';
+  import { ref, onMounted, computed, watchEffect, onUnmounted } from 'vue';
   import { useRoute } from 'vue-router';
   import CoverCard from '@/features/Game/CoverCard.vue';
+  import { useModal } from '@/composables/useModal';
+  import WinnerModal from '@/components/widgets/WinnerModal.vue';
+  import router from '@/router';
+  import GameTimer from '@/features/Game/GameTimer.vue';
 
+  const { open } = useModal();
   const route = useRoute();
   const userStore = useUserStore();
 
   const game = ref<IActiveGame>();
   const loading = ref(false);
   const error = ref<string | null>(null);
+  let visibilityHandler: (() => void) | null = null;
 
   const fetchGame = async (gameId: string) => {
     loading.value = true;
@@ -36,31 +41,47 @@
 
   onMounted(() => {
     const gameId = route.params.id as string;
+
     fetchGame(gameId).then(() => {
       gameSocket.joinGameRoomWS(gameId, userStore.user!.id);
     });
 
-    gameSocket.onPlayCardWS((updatedGame) => {
-      if (updatedGame._id === game.value?._id) {
-        game.value = updatedGame;
+    gameSocket.onPlayCardWS((state) => {
+      if (state.game._id === game.value?._id) {
+        game.value = state.game;
       }
     });
 
-    gameSocket.onDiscardCardWS((updatedGame) => {
-      if (updatedGame._id === game.value?._id) {
-        game.value = updatedGame;
+    gameSocket.onDiscardCardWS((state) => {
+      if (state.game._id === game.value?._id) {
+        game.value = state.game;
       }
+    });
+
+    gameSocket.onReconnect(() => {
+      gameSocket.joinGameRoomWS(gameId, userStore.user!.id);
     });
 
     gameSocket.onGameEndedWS(({ winnerId }) => {
-      if (winnerId === userStore.user?.id) {
-        alert('Вы победили!');
-      } else {
-        alert('Вы проиграли!');
-      }
-
-      router.push('/');
+      const name = game.value?.players.find((plyer) => plyer.id === winnerId)?.name;
+      open({
+        component: WinnerModal,
+        props: {
+          winner: name,
+        },
+        onClose: async () => {
+          await router.replace({ name: 'main' });
+        },
+      });
     });
+
+    visibilityHandler = () => {
+      if (document.visibilityState === 'visible') {
+        gameSocket.joinGameRoomWS(gameId, userStore.user!.id);
+      }
+    };
+
+    document.addEventListener('visibilitychange', visibilityHandler);
   });
 
   const currentPlayer = computed(() => game.value?.playerState || null);
@@ -84,6 +105,12 @@
     if (currentPlayer.value) console.log('currentPlayer сейчас:', currentPlayer.value);
     if (opponent.value) console.log('opponent сейчас:', opponent.value);
   });
+
+  onUnmounted(() => {
+    if (visibilityHandler) {
+      document.removeEventListener('visibilitychange', visibilityHandler);
+    }
+  });
 </script>
 
 <template>
@@ -92,6 +119,7 @@
     <div class="center">
       <div class="top">
         {{ $t('waiting for player') }}: {{ game.players[game.currentPlayer]?.name }}
+        <GameTimer :game="game" />
       </div>
       <div class="field">
         <div class="deck">
@@ -164,6 +192,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    align-items: center;
     z-index: 1;
     font-size: 24px;
     color: var(--input-primary-color);

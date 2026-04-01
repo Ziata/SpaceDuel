@@ -22,6 +22,9 @@
   "integrity":"Integrity",
   "per_turn": "per turn",
   "waiting for player":"Waiting for player",
+  "winnerMessage": "User {name} has won!",
+  "close": "Close",
+
   
   "orbital_bastion": "Orbital Bastion",
   "orbital_bastion_desc": "+12 to planetary shield",

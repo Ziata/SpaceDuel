@@ -39,4 +39,5 @@ export interface IActiveGame {
   requestedUserId?: string;
   deck: ICardBase[];
   discardPile: ICardBase[];
+  turnEndsAt: number;
 }

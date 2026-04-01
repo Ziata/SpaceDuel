@@ -25,19 +25,23 @@
     gamesStore.fetchGames();
 
     gameSocket.onGameCreatedWS((game) => {
+      console.log('1');
       gamesStore.games.push(game);
     });
 
     gameSocket.onGameDeletedWS((gameId) => {
+      console.log('2');
       gamesStore.games = gamesStore.games.filter((g) => g._id !== gameId);
     });
 
     gameSocket.onPlayerJoinedWS((updatedGame) => {
+      console.log('3');
       gamesStore.games = gamesStore.games.map((g) => (g._id === updatedGame._id ? updatedGame : g));
     });
 
-    gameSocket.onGameStartedWS(({ gameId }) => {
-      router.push(`/game/${gameId}`);
+    gameSocket.onGameStartedWS(({ game }) => {
+      console.log('3');
+      router.push(`/game/${game._id}`);
     });
   });
 
@@ -76,7 +80,7 @@
     backdrop-filter: blur(4px);
     display: flex;
     flex-direction: column;
-    width: 600px;
+    width: 700px;
     max-height: 50vh;
     border-radius: 10px;
     padding: 10px 20px 10px;

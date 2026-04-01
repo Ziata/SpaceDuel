@@ -38,7 +38,7 @@
 <style scoped>
   .wrap {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr auto;
+    grid-template-columns: 1fr 1fr 2fr auto;
     align-items: center;
     gap: 12px;
     color: var(--input-text-color);

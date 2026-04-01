@@ -81,7 +81,7 @@
         class="animate-shield"
         :class="position"
         :style="{
-          opacity: player.orbitalShield > 40 ? 0.4 : Number('0.' + player.orbitalShield),
+          opacity: player.orbitalShield > 30 ? 0.7 : player.orbitalShield * 0.02,
         }"
       />
     </div>
@@ -228,7 +228,7 @@
       right: -80%;
     }
 
-    .shieald {
+    .shield {
       opacity: 0.4;
     }
   }
