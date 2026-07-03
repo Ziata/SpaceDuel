@@ -99,6 +99,7 @@
       box-shadow 0.35s ease,
       transform 0.2s ease,
       filter 0.2s ease;
+
     h4 {
       font-size: 16px;
       height: 45px;
@@ -109,6 +110,15 @@
     &:hover .discardBtn {
       opacity: 1;
       pointer-events: auto;
+    }
+
+    @media (max-width: 991px) {
+      width: 140px;
+      max-height: 200px;
+      h4 {
+        font-size: 12px;
+        height: 45px;
+      }
     }
   }
 
@@ -249,6 +259,9 @@
     text-align: center;
     display: flex;
     align-items: center;
+    @media (max-width: 991px) {
+      font-size: 12px;
+    }
   }
 
   .discardBtn {

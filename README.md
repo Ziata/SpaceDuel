@@ -123,7 +123,7 @@ space-duel
 ## Deployment
 
 * Frontend: Netlify
-* Backend: Render
+* Backend: Fly.io
 
 ---
 

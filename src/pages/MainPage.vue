@@ -25,22 +25,18 @@
     gamesStore.fetchGames();
 
     gameSocket.onGameCreatedWS((game) => {
-      console.log('1');
       gamesStore.games.push(game);
     });
 
     gameSocket.onGameDeletedWS((gameId) => {
-      console.log('2');
       gamesStore.games = gamesStore.games.filter((g) => g._id !== gameId);
     });
 
     gameSocket.onPlayerJoinedWS((updatedGame) => {
-      console.log('3');
       gamesStore.games = gamesStore.games.map((g) => (g._id === updatedGame._id ? updatedGame : g));
     });
 
     gameSocket.onGameStartedWS(({ game }) => {
-      console.log('3');
       router.push(`/game/${game._id}`);
     });
   });

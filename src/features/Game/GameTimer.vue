@@ -6,32 +6,26 @@
   const timeLeft = ref(0);
 
   let raf: number | null = null;
-  let turnEndsAt = 0;
-  let offset = 0;
 
-  function updateTimer() {
-    const left = turnEndsAt - (Date.now() + offset);
-
+  // обновляем таймер чисто через серверное время
+  function updateTimer(turnEndsAt: number, serverNow: number) {
+    const left = turnEndsAt - serverNow;
     timeLeft.value = Math.max(0, Math.ceil(left / 1000));
 
     if (left > 0) {
-      raf = requestAnimationFrame(updateTimer);
+      // следующий шаг через 100-200 мс для плавности
+      raf = requestAnimationFrame(() => updateTimer(turnEndsAt, serverNow + 16));
     }
   }
 
-  function startTimer(newTurnEndsAt: number, newOffset: number) {
-    turnEndsAt = newTurnEndsAt;
-    offset = newOffset;
-
+  function startTimer(turnEndsAt: number, serverNow: number) {
     if (raf) cancelAnimationFrame(raf);
-
-    updateTimer();
+    updateTimer(turnEndsAt, serverNow);
   }
 
-  // общий обработчик
+  // общий обработчик всех событий
   function handleTurnUpdate(state: { game: IActiveGame; serverNow: number }) {
-    const newOffset = state.serverNow - Date.now();
-    startTimer(state.game.turnEndsAt, newOffset);
+    startTimer(state.game.turnEndsAt, state.serverNow);
   }
 
   // подписки
@@ -53,5 +47,8 @@
   .wrap {
     font-size: 26px;
     font-weight: bold;
+    @media (max-width: 991px) {
+      font-size: 18px;
+    }
   }
 </style>

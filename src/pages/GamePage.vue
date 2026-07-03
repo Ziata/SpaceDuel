@@ -1,4 +1,7 @@
 <script setup lang="ts">
+  import 'swiper/css';
+  import 'swiper/css/effect-coverflow';
+
   import { getActiveGame } from '@/api/game';
   import PlayCard from '@/features/Game/PlayCard.vue';
   import GamePlayer from '@/features/Game/GamePlayer.vue';
@@ -12,7 +15,12 @@
   import WinnerModal from '@/components/widgets/WinnerModal.vue';
   import router from '@/router';
   import GameTimer from '@/features/Game/GameTimer.vue';
+  import { Swiper, SwiperSlide } from 'swiper/vue';
+  import { useWindowSize } from '@vueuse/core';
+  import { EffectCoverflow } from 'swiper/modules';
 
+  const { width } = useWindowSize();
+  const isTablet = computed(() => width.value < 1280);
   const { open } = useModal();
   const route = useRoute();
   const userStore = useUserStore();
@@ -148,7 +156,7 @@
       </div>
     </div>
     <GamePlayer v-if="opponent" :player="opponent" class="right" :position="'right'" />
-    <div class="hand">
+    <div class="hand desktop" v-if="!isTablet">
       <PlayCard
         v-for="card in currentPlayer?.hand || []"
         :key="card.id"
@@ -156,6 +164,28 @@
         :game="game"
       />
     </div>
+    <Swiper
+      v-else
+      :modules="[EffectCoverflow]"
+      class="slider"
+      :initialSlide="2"
+      :slidesPerView="'auto'"
+      :centeredSlides="true"
+      :effect="'coverflow'"
+      :grabCursor="true"
+      :coverflowEffect="{
+        rotate: 20,
+        stretch: -10,
+        depth: 200,
+        modifier: 1,
+        slideShadows: true,
+        scale: 0.9,
+      }"
+    >
+      <SwiperSlide v-for="card in currentPlayer?.hand || []" :key="card.id" class="slide">
+        <PlayCard :card="card" :game="game" />
+      </SwiperSlide>
+    </Swiper>
   </main>
 </template>
 
@@ -199,6 +229,9 @@
     margin: 0 auto;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
+    @media (max-width: 991px) {
+      font-size: 16px;
+    }
   }
 
   .right {
@@ -220,6 +253,10 @@
     height: 290px;
     gap: 10px;
     justify-content: center;
+    overflow: auto;
+    @media (max-width: 1280px) {
+      justify-content: flex-start;
+    }
   }
 
   .field {
@@ -242,6 +279,9 @@
     div {
       position: absolute;
     }
+    @media (max-width: 1280px) {
+      display: none;
+    }
   }
 
   .main-deck {
@@ -251,5 +291,64 @@
     width: 100%;
     overflow: auto;
     padding: 20px 0;
+  }
+
+  .slider {
+    grid-column: 1 / 4;
+    grid-row: 2 / 3;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    background: #000;
+    border-radius: 8px;
+    > div {
+      width: 180px;
+      max-height: 250px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .main-deck {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: auto;
+      z-index: 1;
+      height: 250px;
+      max-width: 95vw;
+      margin: 0 auto;
+      > div {
+        &:not(:first-child) {
+          margin-left: -100px;
+        }
+      }
+    }
+    .slider {
+      padding: 26px 0 6px;
+    }
+    .slide div {
+      max-height: 230px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .main {
+      grid-template-columns: 100px 1fr 100px;
+    }
+    .top {
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .slide div {
+      max-height: 200px;
+    }
   }
 </style>
